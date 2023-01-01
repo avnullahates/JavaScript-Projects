@@ -20,4 +20,3 @@ class UI{
     displayResult(result){
         this.outputResult.value = result;
     }
-}
