@@ -1,0 +1,22 @@
+{
+  "employees": [
+    {
+      "name": "Mustafa Ates",
+      "department": "Bilisim",
+      "salary": 14500,
+      "id": 1
+    },
+    {
+      "name": "Avnullah Ates",
+      "department": "HR",
+      "salary": 15000,
+      "id": 2
+    },
+    {
+      "name": "Mansur Ates",
+      "department": "IK",
+      "salary": 21312,
+      "id": 3
+    }
+  ]
+}
