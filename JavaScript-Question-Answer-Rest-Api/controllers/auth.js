@@ -1,12 +1,13 @@
 const User = require('../models/User')
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
-
+const {sendJwtToClient} = require("../helpers/authorization/tokenHelpers");
+const { response } = require('express');
 const register = asyncErrorWrapper(async (req, res, next) => {
     //POST DATA
-   
-    
-    const {name,email,password,role} = req.body;
+
+
+    const { name, email, password, role } = req.body;
     //async, await
     const user = await User.create({
         name,
@@ -14,17 +15,20 @@ const register = asyncErrorWrapper(async (req, res, next) => {
         password,
         role
     });
-    res.status(200).json({
-        seccess: true,
-        data: user
-    });
-});
 
-const errorTest = (req, res, next) => {
-    return next(new SyntaxError("Bir hata olystu... Custom Error", 400));
-};
+    sendJwtToClient(user, res);
+});
+const tokentest = (req, res, next) => {
+
+    res.json({
+        success: true,
+        message: "Welcome"
+    });
+
+}
 
 module.exports = {
     register,
-    errorTest
+    tokentest
+
 }

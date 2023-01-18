@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const Schema = mongoose.Schema;
 
@@ -8,12 +9,12 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     name: {
         type: String,
-        require: [true, "Please provide a name"]
+        required: [true, "Please provide a name"]
     },
     email: {
         type: String,
-        require: [true, "Please provide email"],
-        uniqe: [true, "Please try different email"],
+        required: [true, "Please provide email"],
+        unique: true,
         match: [
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             "Please provide a vaild email"
@@ -27,7 +28,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         minLength: [6, "Please provide a password with min lenght 6"],
-        require: [true, "Please provide a password"],
+        required: [true, "Please provide a password"],
         select: false
     },
     createdAt: {
@@ -58,9 +59,25 @@ const UserSchema = new Schema({
 });
 
 
+//UserSchema Methods
+UserSchema.methods.generateJwtFromUser = function () {
+    const { JWT_SECRET_KEY, JWT_EXPIRE } = process.env;
+    const payload = {
+        id: this._id,
+        name: this.name
+    };
+
+    const token = jwt.sign(payload, JWT_SECRET_KEY, {
+        expiresIn: JWT_EXPIRE
+    });
+
+    return token;
+};
+
+
 UserSchema.pre("save", function (next) {
 
-//parola degisme
+    //parola degisme
     if (!this.isModified("password")) {
         next();
     }
