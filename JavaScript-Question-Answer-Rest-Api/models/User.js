@@ -32,7 +32,7 @@ const UserSchema = new Schema({
         type: String,
         minLength: [6, "Please provide a password with min lenght 6"],
         required: [true, "Please provide a password"],
-        select: true
+        select: false
     },
     createdAt: {
         type: Date,
